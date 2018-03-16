@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+	<!-- 把action扩展名改为.do -->
+	<constant name="struts.action.extension" value="do" />
+
+	<!-- 把主题设为simple -->
+	<constant name="struts.ui.theme" value="simple" />
+
+	<!-- 设置文件上传最打值20M -->
+	<constant name="struts.multipart.maxSize" value="104857600" />
+
+	<package name="default" namespace="/" extends="struts-default,json-default">
+
+		<interceptors>
+			<!-- 声明拦截器 -->
+			<interceptor name="checkPrivilege"
+				class="cn.qdgxy.oa.util.CheckPrivilegeInterceptor"></interceptor>
+
+			<!-- 配置我们自己的拦截器栈 -->
+			<interceptor-stack name="myDefaultStack">
+				<interceptor-ref name="checkPrivilege"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+
+		<!-- 配置默认的拦截器栈 -->
+		<default-interceptor-ref name="myDefaultStack"></default-interceptor-ref>
+
+		<!-- 配置全局的Result -->
+		<global-results>
+			<result name="loginUI">/WEB-INF/jsp/loginoutAction/loginUI.jsp</result>
+			<result name="noPrivilegeUI">/noPrivilegeUI.jsp</result>
+		</global-results>
+
+		<!-- 岗位管理 -->
+		<action name="role_*" class="roleAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/roleAction/list.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/roleAction/saveUI.jsp</result>
+			<result name="setPrivilegeUI">/WEB-INF/jsp/roleAction/setPrivilegeUI.jsp
+			</result>
+			<result name="toList" type="redirectAction">role_list</result>
+		</action>
+
+		<!-- 部门管理 -->
+		<action name="department_*" class="departmentAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/departmentAction/list.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/departmentAction/saveUI.jsp</result>
+			<result name="toList" type="redirectAction">department_list?parentId=${parentId}
+			</result>
+		</action>
+
+		<!-- 用户管理 -->
+		<action name="user_*" class="userAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/userAction/list.jsp</result>
+			<result name="list_one">/WEB-INF/jsp/userAction/list_one.jsp</result>
+			<result name="filtrate">/WEB-INF/jsp/userAction/filtrate.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/userAction/saveUI.jsp</result>
+			<result name="toList" type="redirectAction">user_list</result>
+			<result name="info">/WEB-INF/jsp/userAction/info.jsp</result>
+			<result name="editPassword">/WEB-INF/jsp/userAction/editPassword.jsp</result>
+			<result name="intoInfoUI">/WEB-INF/jsp/userAction/intoInfo.jsp</result>
+		</action>
+
+		<!-- 班级管理 -->
+		<action name="clazz_*" class="clazzAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/clazzAction/list.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/clazzAction/saveUI.jsp</result>
+			<result name="toList" type="redirectAction">clazz_list</result>
+			<result name="showClazz" type="json">
+				<param name="root">result</param>
+			</result>
+			<result name="showCondition">/WEB-INF/jsp/clazzAction/showCondition.jsp
+			</result>
+			<result name="studntHomework" type="stream">
+				<param name="contentType">${contentType}</param>
+				<param name="contentDisposition">attachment;filename="${filename}"</param>
+				<param name="inputName">studntHomework</param>
+				<param name="bufferSize">2048</param>
+			</result>
+		</action>
+
+		<!-- 课程管理 -->
+		<action name="courseManage_*" class="courseManageAction"
+			method="{1}">
+			<result name="list">/WEB-INF/jsp/courseManageAction/list.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/courseManageAction/saveUI.jsp
+			</result>
+			<result name="toList" type="redirectAction">courseManage_list</result>
+		</action>
+
+		<!-- 课程的作用管理 -->
+		<action name="course_*" class="courseAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/courseAction/list.jsp</result>
+			<result name="show">/WEB-INF/jsp/courseAction/show.jsp</result>
+		</action>
+
+		<!-- 作业管理 -->
+		<action name="homework_*" class="homeworkAction" method="{1}">
+			<result name="saveUI">/WEB-INF/jsp/homeworkAction/saveUI.jsp</result>
+			<result name="toShow" type="redirectAction">course_show?id=${#courseId}
+			</result>
+			<result name="download" type="stream">
+				<param name="contentType">${contentType}</param>
+				<param name="contentDisposition">attachment;filename="${filename}"</param>
+				<param name="inputName">downloadFile</param>
+				<param name="bufferSize">2048</param>
+			</result>
+			<result name="collect" type="stream">
+				<param name="contentType">application/x-zip-compressed</param>
+				<param name="contentDisposition">attachment;filename="${filename}"</param>
+				<param name="inputName">collectFile</param>
+				<param name="bufferSize">2048</param>
+			</result>
+			<interceptor-ref name="defaultStack">
+				<param name="fileUpload.maximumSize">100000000</param>
+			</interceptor-ref>
+			<result name="showCourses" type="redirectAction">course_list?i=1</result>
+			<result name="doStatistics">/WEB-INF/jsp/homeworkAction/statistics.jsp
+			</result>
+		</action>
+
+		<!-- 提交作业管理 -->
+		<action name="submitWork_*" class="submitWorkAction" method="{1}">
+			<result name="saveUI">/WEB-INF/jsp/submitWorkAction/saveUI.jsp</result>
+			<result name="toShow" type="redirectAction">course_show?id=${#courseId}
+			</result>
+			<interceptor-ref name="defaultStack">
+				<param name="fileUpload.maximumSize">100000000</param>
+			</interceptor-ref>
+		</action>
+
+		<!-- 登录注销功能 -->
+		<action name="loginout_*" class="loginoutAction" method="{1}">
+			<result name="logout">/WEB-INF/jsp/loginoutAction/logout.jsp</result>
+			<result name="toHome" type="redirect">/index.jsp</result>
+		</action>
+
+		<!-- 首页 -->
+		<action name="home_*" class="homeAction" method="{1}">
+			<result name="{1}">/WEB-INF/jsp/homeAction/{1}.jsp</result>
+		</action>
+
+		<!-- 版块管理 -->
+		<action name="forumManage_*" class="forumManageAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/forumManageAction/list.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/forumManageAction/saveUI.jsp
+			</result>
+			<result name="toList" type="redirectAction">forumManage_list</result>
+		</action>
+
+		<!-- 论坛：版块相关功能 -->
+		<action name="forum_*" class="forumAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/forumAction/list.jsp</result>
+			<result name="show">/WEB-INF/jsp/forumAction/show.jsp</result>
+		</action>
+
+		<!-- 论坛：主题相关功能 -->
+		<action name="topic_*" class="topicAction" method="{1}">
+			<result name="show">/WEB-INF/jsp/topicAction/show.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/topicAction/saveUI.jsp</result>
+			<result name="toShow" type="redirectAction">topic_show?id=${#topicId}</result>
+			<result name="moveUI">/WEB-INF/jsp/topicAction/moveUI.jsp</result>
+			<result name="toTopic" type="redirectAction">forum_show?id=${#forumId}</result>
+		</action>
+
+		<!-- 论坛：回复相关功能 -->
+		<action name="reply_*" class="replyAction" method="{1}">
+			<result name="toTopicShow" type="redirectAction">topic_show?id=${topicId}
+			</result>
+			<result name="edit">/WEB-INF/jsp/replyAction/editUI.jsp</result>
+		</action>
+
+		<!-- 标记管理 -->
+		<action name="tagManage_*" class="tagManageAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/tagManageAction/list.jsp</result>
+			<result name="toList" type="redirectAction">tagManage_list</result>
+			<result name="saveUI">/WEB-INF/jsp/tagManageAction/saveUI.jsp</result>
+		</action>
+
+		<!-- 学期设置模块 -->
+		<action name="sys_*" class="setTermAction" method="{1}">
+
+			<result name="termList">/WEB-INF/jsp/systemAction/termList.jsp</result>
+			<result name="termSaveUI">/WEB-INF/jsp/systemAction/termSaveUI.jsp</result>
+			<result name="toTermList" type="redirectAction">sys_setTerm</result>
+
+		</action>
+		
+		<!-- 在线测试模块 -->
+		<action name="onlineTest_*" class="onlineTestAction" method="{1}">
+			<result name="list" type="redirectAction">course_list?i=2</result>
+			<result name="show">/WEB-INF/jsp/onlineTestAction/show.jsp</result>
+			<result name="input">/WEB-INF/jsp/onlineTestAction/addUI.jsp</result>
+			<result name="toShow" type="redirectAction">onlineTest_testList?courseId=${courseId}</result>
+			<result name="addUI">/WEB-INF/jsp/onlineTestAction/addUI.jsp</result>
+			<result name="toAddUI" type="redirectAction">onlineTest_sendCourseId?courseId=${courseId}</result>
+			<result name="controlUI">/WEB-INF/jsp/onlineTestAction/controlUI.jsp</result>
+			<result name="toControlUI" type="redirectAction">onlineTest_controlUI?courseId=${courseId}</result>
+			<result name="showOneUI">/WEB-INF/jsp/onlineTestAction/showOneUI.jsp</result>
+			<result name="updateUI">/WEB-INF/jsp/onlineTestAction/updateUI.jsp</result>
+			<result name="toUpdateUI" type="redirectAction">onlineTest_sendCourseId?courseId=${courseId}</result>
+			<result name="queryUI">/WEB-INF/jsp/onlineTestAction/queryUI.jsp</result>
+			
+			<!--学生在线测试相关-->
+			<result name="goTest">/WEB-INF/jsp/onlineTestAction/studentTest.jsp</result>
+			
+		</action>
+
+		<action name="lead_*" class="cn.qdgxy.oa.insert.ExcelOperate"
+			method="{1}">
+			<result name="leadUserUI">/WEB-INF/jsp/systemAction/leadUserUI.jsp</result>
+			<interceptor-ref name="defaultStack">
+				<param name="fileUpload.maximumSize">100000000</param>
+			</interceptor-ref>
+		</action>
+		
+		
+	</package>
+
+</struts>

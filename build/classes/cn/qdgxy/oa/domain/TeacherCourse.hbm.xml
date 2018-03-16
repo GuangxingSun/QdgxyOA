@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cn.qdgxy.oa.domain">
+
+	<class name="TeacherCourse" table="qdgxy_teachercourse">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		
+		<property name="courseId" />
+		<property name="termId" />
+		
+		<many-to-one name="teacher" class="User" column="teacherId"></many-to-one>
+	</class>
+		
+
+</hibernate-mapping>

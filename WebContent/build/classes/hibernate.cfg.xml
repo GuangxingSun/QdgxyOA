@@ -1,0 +1,40 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+<session-factory>
+	<!--====================== 配置Mysql 方言信息 =====================-->
+	<property name="hibernate.dialect">
+		org.hibernate.dialect.MySQL5InnoDBDialect
+	</property>
+
+
+	<!--============================ 配置Oracle方言信息 ========================================-->
+	<!-- <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property> -->
+
+	<!-- 其他配置信息 -->
+	<property name="hbm2ddl.auto">update</property>
+
+	<!-- 声明映射文件 -->
+	<mapping resource="cn/qdgxy/oa/domain/User.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/Role.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/Department.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/Privilege.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/Forum.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/Reply.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/Topic.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/SubmitWork.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/Homework.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/Clazz.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/UploadSrc.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/Course.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/Term.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/Tag.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/TeacherCourse.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/Result.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/TestLibrary.hbm.xml" />
+	<mapping resource="cn/qdgxy/oa/domain/OnlineTestCase.hbm.xml" />
+
+</session-factory>
+</hibernate-configuration>

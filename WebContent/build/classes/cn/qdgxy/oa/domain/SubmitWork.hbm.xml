@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cn.qdgxy.oa.domain">
+
+	<class name="SubmitWork" table="qdgxy_submitWork">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<property name="fileName" />
+		<property name="time" type="timestamp"/>
+		<property name="score"></property>
+
+		<many-to-one name="student" class="User" column="studentId"></many-to-one>
+		<many-to-one name="homework" class="Homework" column="homeworkId"></many-to-one>
+
+	</class>
+
+</hibernate-mapping>

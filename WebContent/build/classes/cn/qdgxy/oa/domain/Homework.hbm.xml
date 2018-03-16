@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cn.qdgxy.oa.domain">
+
+	<class name="Homework" table="qdgxy_homework">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<property name="time" type="timestamp"/>
+		<property name="stime" type="date"/>
+		<property name="week" />
+		<property name="fileName" />
+		<property name="hasSubmit" />
+		<property name="sc" />
+		<property name="i" />
+		<property name="j" />
+		<property name="submitCount" />
+
+		<many-to-one name="course" class="Course" column="courseId" />
+		<many-to-one name="teacher" class="User" column="teacherId" />
+		<many-to-one name="thisTerm" class="Term" column="termId"/>
+		
+		<set name="submitWorks" cascade="delete">
+			<key column="homeworkId" />
+			<one-to-many class="SubmitWork" />
+		</set>
+		
+		<set name="clazzs" table="qdgxy_clazz_homework">
+			<key column="homeworkId" />
+			<many-to-many class="Clazz" column="clazzId" />
+		</set>
+
+	</class>
+
+</hibernate-mapping>

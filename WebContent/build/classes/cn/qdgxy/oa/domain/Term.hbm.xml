@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cn.qdgxy.oa.domain">
+
+	<class name="Term" table="qdgxy_term">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<property name="schoolYear" />
+		<property name="term" />
+		<property name="time" type="timestamp" />
+		<property name="thisTerm" />
+		
+		<set name="homeworks" cascade="delete">
+			<key column="termId" />
+			<one-to-many class="Homework" />
+		</set>
+		
+		<set name="onlineTestCases" cascade="delete">
+			<key column="termId" />
+			<one-to-many class="OnlineTestCase" />
+		</set>
+		
+		<!-- results属性，表示我与Result之间一对多的关系 -->
+		<set name="results" cascade="delete">
+			<key column="termId"/>
+			<one-to-many class="Result"/>
+		</set>
+		<!-- courses属性，表示我与Course之间多对多的关系 -->
+		<set name="courses" table="qdgxy_course_term" lazy="false">
+			<key column="termId"/>
+			<many-to-many class="Course" column="courseId"/>
+		</set>
+		
+	</class>
+
+</hibernate-mapping>

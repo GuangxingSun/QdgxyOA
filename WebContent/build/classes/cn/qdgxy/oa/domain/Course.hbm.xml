@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cn.qdgxy.oa.domain">
+
+	<class name="Course" table="qdgxy_course">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<property name="description" />
+		<property name="onlineTestCount"/>
+
+		<set name="homeworks" cascade="delete">
+			<key column="courseId" />
+			<one-to-many class="Homework" />
+		</set>
+		
+		<!-- results属性，表示我与Result之间一对多的关系 -->
+		<set name="results" cascade="delete">
+			<key column="courseId"/>
+			<one-to-many class="Result"/>			
+		</set>
+		
+		<set name="onlineTestCases" cascade="delete">
+			<key column="courseId"/>
+			<one-to-many class="OnlineTestCase"/>			
+		</set>
+		
+		<!-- testLibraries属性，表示我与TestLibrary之间一对多的关系 -->
+		<set name="testLibraries">
+			<key column="courseId"/>
+			<one-to-many class="TestLibrary"/>
+		</set>
+		
+		<!-- clazzs属性表示我与Clazz之间多对多的关系 -->
+		<set name="clazzs" table="qdgxy_course_clazz" lazy="false">
+			<key column="courseId"/>
+			<many-to-many class="Clazz" column="clazzId"></many-to-many>
+		</set>
+		
+		
+		<!-- terms属性，表示我与Term之间多对多的关系 -->
+		<set name="terms" table="qdgxy_course_term" lazy="false">
+			<key column="courseId"/>
+			<many-to-many class="Term" column="termId"/>
+		</set>
+		
+	</class>
+
+</hibernate-mapping>

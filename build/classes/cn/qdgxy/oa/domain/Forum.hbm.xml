@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cn.qdgxy.oa.domain">
+
+	<class name="Forum" table="qdgxy_forum">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<property name="description" />
+		<property name="position" />
+
+		<property name="topicCount" />
+		<property name="articleCount" />
+
+		<!-- topics属性，表示我与Topic的一对多关系 -->
+		<set name="topics" cascade="delete">
+			<key column="forumId"></key>
+			<one-to-many class="Topic" />
+		</set>
+
+
+		<!-- lastTopic属性，表示我与Topic的一对一关系 采用基于外键的一对一映射。本方有外键。 -->
+		<many-to-one name="lastTopic" class="Topic" column="lastTopicId" />
+
+
+	</class>
+
+</hibernate-mapping>

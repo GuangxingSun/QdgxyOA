@@ -1,0 +1,34 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/style/blue/forum.css" />
+
+<script charset="utf-8" src="${pageContext.request.contextPath}/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="${pageContext.request.contextPath}/kindeditor/lang/zh_CN.js"></script>
+<script>
+
+	$(function(){
+	
+		var editor;
+		
+		var options = {
+        	resizeType : 1
+		};
+		
+		KindEditor.ready(function(K) {
+			editor = K.create('textarea[name="content"]', options);
+		});
+		
+		$("input[type='image']").click(function() {
+			var text = delHtmlTag(editor.text());
+			if (text.length < 4) {
+				return false;
+			}
+		});
+	});
+	
+	function delHtmlTag(str){
+	  	str = str.replace(/[\r\n]/g,"");//去掉回车换行
+		str = str.replace(/\s/g,""); //去掉中间空格
+	  	return str;
+    }
+    
+</script>

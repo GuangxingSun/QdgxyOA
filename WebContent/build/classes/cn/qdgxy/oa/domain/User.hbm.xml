@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cn.qdgxy.oa.domain">
+
+	<class name="User" table="qdgxy_user">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<property name="loginName" />
+		<property name="password" />
+		<property name="name" />
+		<property name="isTorS" />
+		<property name="gender" />
+		<property name="phoneNumber" />
+		<property name="email" />
+		<property name="description" />
+
+		<!-- department属性，本类与Department的多对一 -->
+		<many-to-one name="department" class="Department" column="departmentId"></many-to-one>
+
+		<!-- roles属性，本类与Role的多对多 -->
+		<set name="roles" table="qdgxy_user_role" lazy="false">
+			<key column="userId"></key>
+			<many-to-many class="Role" column="roleId"></many-to-many>
+		</set>
+
+		<set name="homeworks" cascade="delete">
+			<key column="teacherId"></key>
+			<one-to-many class="Homework"></one-to-many>
+		</set>
+
+		<!-- 学生提交作业信息 -->
+		<set name="submitWorks" cascade="delete">
+			<key column="studentId"></key>
+			<one-to-many class="SubmitWork"></one-to-many>
+		</set>
+		
+		<!-- 学生成绩  results属性表示我与Result之间多对一的关系 -->
+		<set name="results">
+			<key column="studentId"></key>
+			<one-to-many class="Result"/>
+		</set>
+		
+
+		<set name="clazzs" table="qdgxy_user_clazz" >
+			<key column="studentId"></key>
+			<many-to-many class="Clazz" column="clazzId"></many-to-many>
+		</set>
+		
+		<set name="tags" cascade="delete">
+			<key column="teacherId"></key>
+			<one-to-many class="Tag"/>
+		</set>
+
+		<set name="teacherCourses" cascade="delete" lazy="false">
+			<key column="teacherId"></key>
+			<one-to-many class="TeacherCourse"/>
+		</set>
+		
+
+	</class>
+
+</hibernate-mapping>
